@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      .marker {
+        background-image: url('/static/blip.png');
+        background-size: cover;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .mapboxgl-popup {
+        max-width: 200px;
+      }
+
+      .mapboxgl-popup-content {
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+      }
+
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiaHNpdnBhIiwiYSI6ImNqdDhqdnJ3dDA5bHg0M3FrbDF2czZtdXAifQ.4_DCulx6RSk9nQsfX7FKdQ';
+
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v10',
+ 
+  zoom: 1
+});
+
+var geojson = {
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "kolkata",
+        "type": "bridge collapse"
+      },
+      "geometry": {
+        "coordinates": [
+          88.248252,
+          22.4525
+        ],
+        "type": "Point"
+      },
+      "id": "04085879581f05ffa1ff2399e6d086dc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Japan",
+        "type": "flood"
+      },
+      "geometry": {
+        "coordinates": [
+          133.765209,
+          34.601116
+        ],
+        "type": "Point"
+      },
+      "id": "1dd1c89d7829d3d3d5f4189f305d5595"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "North Korea",
+        "type": "flood"
+      },
+      "geometry": {
+        "coordinates": [
+          129.221863,
+          42.098442
+        ],
+        "type": "Point"
+      },
+      "id": "5e4dcec38f3e303ad0f1c3396b9af774"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Guatemala",
+        "type": "volcanic eruption"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.952491,
+          14.476787
+        ],
+        "type": "Point"
+      },
+      "id": "6e3b2a0a038384551648477b72d91e49"
+    },
+    
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Papua New Guinea",
+        "type": "earthquake"
+      },
+      "geometry": {
+        "coordinates": [
+          146.1,
+          -6.36667
+        ],
+        "type": "Point"
+      },
+      "id": "country.13569484256220160"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Nigeria",
+        "type": "flood"
+      },
+      "geometry": {
+        "coordinates": [
+          8,
+          9
+        ],
+        "type": "Point"
+      },
+      "id": "country.15478660959034950"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Indonesia",
+        "type": "earthquake"
+      },
+      "geometry": {
+        "coordinates": [
+          118,
+          -2
+        ],
+        "type": "Point"
+      },
+      "id": "country.2945973043114360"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "kerala",
+        "type": "flood"
+      },
+      "geometry": {
+        "coordinates": [
+          76.169347,
+          11.129597
+        ],
+        "type": "Point"
+      },
+      "id": "edd1575fc4e80f29467ecda6949916d7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Madikeri, Karnataka, India",
+        "type": "flood"
+      },
+      "geometry": {
+        "coordinates": [
+          75.73333,
+          12.41667
+        ],
+        "type": "Point"
+      },
+      "id": "place.15593968580235970"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Karachi, Sind, Pakistan",
+        "type": "heatwave"
+      },
+      "geometry": {
+        "coordinates": [
+          67.114544,
+          24.870862
+        ],
+        "type": "Point"
+      },
+      "id": "place.7148467886841210"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "place_name": "Palu, Sulawesi Tengah, Indonesia",
+        "type": "tsunami"
+      },
+      "geometry": {
+        "coordinates": [
+          119.83333,
+          -0.9
+        ],
+        "type": "Point"
+      },
+      "id": "place.9809379379599460"
+    }
+  ],
+  "type": "FeatureCollection"
+}
+
+geojson.features.forEach(function(marker) {
+
+// create a HTML element for each feature
+var el = document.createElement('div');
+el.className = 'marker';
+
+// make a marker for each feature and add to the map
+new mapboxgl.Marker(el)
+  .setLngLat(marker.geometry.coordinates)
+  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+    .setHTML('<h3>' + marker.properties.place_name+ '</h3><p>' + marker.properties.type + '</p>'+'<button onclick="location.href = \'/donate\';"> Donate </button>'))
+  .addTo(map);
+});
+
+
+</script>
+
+</body>
+</html>
